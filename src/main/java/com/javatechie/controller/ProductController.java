@@ -33,6 +33,7 @@ public class ProductController {
     }
 
     @PostMapping("/new")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String addNewUser(@RequestBody UserInfo userInfo) {
         return service.addUser(userInfo);
     }
