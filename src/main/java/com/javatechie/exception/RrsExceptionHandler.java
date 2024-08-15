@@ -2,7 +2,10 @@ package com.javatechie.exception;
 
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -31,7 +34,8 @@ public class RrsExceptionHandler {
     @ExceptionHandler({
             BadRequestException.class,
             ConstraintViolationException.class,
-
+           // ServletException.class,
+            //IOException.class,
             MethodArgumentTypeMismatchException.class,
             MissingServletRequestParameterException.class,
             MethodArgumentNotValidException.class,
@@ -55,11 +59,48 @@ public class RrsExceptionHandler {
         return buildErrorResponse(mapToRrsException(exception, HttpStatus.FORBIDDEN));
     }
 
-    @ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(RrsException exception) {
+    public ResponseEntity<ErrorResponse> handleUsernameNotFoundException(RrsException exception) {
         //return buildErrorResponse(exception);
         return buildErrorResponse(mapToRrsException(exception, HttpStatus.NOT_FOUND));
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(NotFoundException exception) {
+        //return buildErrorResponse(exception);
+        return buildErrorResponse(mapToRrsException(exception, HttpStatus.NOT_FOUND));
+    }
+
+    @ExceptionHandler(SignatureException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorResponse> handleSignatureException(SignatureException exception) {
+        return buildErrorResponse(mapToRrsException(exception, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorResponse> handleExpiredJwtException(ExpiredJwtException exception) {
+        return buildErrorResponse(mapToRrsException(exception, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception) {
+        return buildErrorResponse(mapToRrsException(exception, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(MalformedJwtException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorResponse> handleMalformedJwtException(MalformedJwtException exception) {
+        return buildErrorResponse(mapToRrsException(exception, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(UnsupportedJwtException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorResponse> handleUnsupportedJwtException(UnsupportedJwtException exception) {
+        return buildErrorResponse(mapToRrsException(exception, HttpStatus.BAD_REQUEST));
     }
 
     @ExceptionHandler(NoSuchElementException.class)

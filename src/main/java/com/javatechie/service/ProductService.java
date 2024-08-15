@@ -2,6 +2,7 @@ package com.javatechie.service;
 
 import com.javatechie.dto.Product;
 import com.javatechie.entity.UserInfo;
+import com.javatechie.exception.NotFoundException;
 import com.javatechie.repository.UserInfoRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class ProductService {
         return productList.stream()
                 .filter(product -> product.getProductId() == id)
                 .findAny()
-                .orElseThrow(() -> new RuntimeException("product " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("product " + id + " not found"));
     }
 
 
